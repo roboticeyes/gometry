@@ -20,17 +20,18 @@ type Image interface {
 type imageStruct struct {
 	geometry
 
-	data  image.Image
-	valid bool
+	data image.Image
 }
 
 // NewImage creates a new image based on the reader. Supported formats are JPG and PNG
-func NewImage(r io.Reader) Image {
+func NewImage(name string, r io.Reader) Image {
 
 	var err error
 	img := imageStruct{
-		valid: false,
 		geometry: geometry{
+			valid:     false,
+			name:      name,
+			geomType:  ImageType,
 			dimension: 2,
 		},
 	}
@@ -41,10 +42,6 @@ func NewImage(r io.Reader) Image {
 	}
 	img.valid = true
 	return &img
-}
-
-func (i *imageStruct) Valid() bool {
-	return i.valid
 }
 
 func (i *imageStruct) Width() int {

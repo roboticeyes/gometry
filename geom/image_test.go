@@ -9,7 +9,7 @@ import (
 func TestCreateInvalid(t *testing.T) {
 
 	r := bytes.NewReader([]byte("anything"))
-	i := NewImage(r)
+	i := NewImage("img", r)
 	if i.Valid() {
 		t.Fatal("Image should not be valid")
 	}
@@ -22,9 +22,13 @@ func TestCreateValid(t *testing.T) {
 		t.Fatal("Image not valid")
 	}
 	r := bytes.NewReader(b)
-	i := NewImage(r)
+	i := NewImage("image", r)
 	if !i.Valid() {
 		t.Fatal("Image should be valid")
+	}
+
+	if i.Name() != "image" {
+		t.Fatal("Image name does not fit")
 	}
 
 	if i.Width() != 16 {

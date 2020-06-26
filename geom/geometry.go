@@ -1,9 +1,5 @@
 package geom
 
-import (
-	"github.com/go-gl/mathgl/mgl32"
-)
-
 type GeometryType int
 
 const (
@@ -14,43 +10,38 @@ const (
 	ImageType
 )
 
+// Geometry is the base interface for any geometry object
 type Geometry interface {
+	Name() string
 	SetName(name string)
 	Valid() bool
-}
-
-type Geometry2D interface {
-	Geometry
-	Width() int
-	Height() int
-	MinBound() mgl32.Vec2
-	MaxBound() mgl32.Vec2
+	Type() GeometryType
+	Dimension() int
 }
 
 type geometry struct {
 	geomType  GeometryType
 	dimension int
 	name      string
+	valid     bool
 }
 
 func (g *geometry) SetName(name string) {
 	g.name = name
 }
 
-type geometry3D struct {
-	geometry
+func (g *geometry) Name() string {
+	return g.name
 }
 
-type TriangleMesh interface {
+func (g *geometry) Type() GeometryType {
+	return g.geomType
 }
 
-type triangleMesh struct {
-	geometry3D
+func (g *geometry) Dimension() int {
+	return g.dimension
 }
 
-type PointCloud interface {
-}
-
-type pointCloud struct {
-	geometry3D
+func (g *geometry) Valid() bool {
+	return g.valid
 }
