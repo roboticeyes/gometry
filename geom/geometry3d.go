@@ -23,8 +23,14 @@ type Geometry3D interface {
 	// Rotate rotates the geometry by the given quaternion
 	Rotate(q mgl32.Quat)
 
+	// SetVertices replaces all vertices
+	SetVertices(vertices []mgl32.Vec3)
+
 	// Vertices returns the raw vertices of the geometry (coordinates)
 	Vertices() []mgl32.Vec3
+
+	// Returns a specific vertex of the vertex list
+	Vertex(idx int) mgl32.Vec3
 }
 
 type geometry3D struct {
@@ -33,8 +39,16 @@ type geometry3D struct {
 	vertices []mgl32.Vec3
 }
 
+func (g *geometry3D) SetVertices(vertices []mgl32.Vec3) {
+	g.vertices = vertices
+}
+
 func (g *geometry3D) Vertices() []mgl32.Vec3 {
 	return g.vertices
+}
+
+func (g *geometry3D) Vertex(idx int) mgl32.Vec3 {
+	return g.vertices[idx]
 }
 
 func (g *geometry3D) MinBound() mgl32.Vec3 {
