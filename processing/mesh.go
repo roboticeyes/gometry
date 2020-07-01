@@ -9,12 +9,9 @@ import (
 	"github.com/roboticeyes/gometry/geom"
 )
 
-const (
-	mergeEpsilon = 0.001
-)
-
-// RemoveDuplicates removes vertex duplicates of a triangle mesh
-func RemoveDuplicates(mesh geom.TriangleMesh) error {
+// RemoveDuplicates removes vertex duplicates of a triangle mesh. If two vertices are closer than
+// the given distanceThreshold, then the vertices are merged
+func RemoveDuplicates(mesh geom.TriangleMesh, distanceThreshold float64) error {
 
 	vertices := []mgl32.Vec3{}
 	triangles := []geom.Triangle{}
@@ -47,7 +44,7 @@ func RemoveDuplicates(mesh geom.TriangleMesh) error {
 				float32(nearest[0].Dimension(1)),
 				float32(nearest[0].Dimension(2)),
 			}).Len()
-			if math.Abs(float64(dist)) > mergeEpsilon {
+			if math.Abs(float64(dist)) > distanceThreshold {
 				vertices = append(vertices, vtx)
 				tree.Insert(
 					points.NewPoint([]float64{
@@ -89,7 +86,6 @@ func RemoveDuplicates(mesh geom.TriangleMesh) error {
 		}
 		triangles = append(triangles, triangle)
 	}
-	// 4. replace vertices and triangle structure
 	mesh.SetVertices(vertices)
 	mesh.SetTriangles(triangles)
 

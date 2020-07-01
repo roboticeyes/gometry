@@ -49,7 +49,7 @@ func TestRemoveDuplicates(t *testing.T) {
 	w, _ := os.Create("/tmp/mesh.obj")
 	io.WriteTriangleMeshToObj(m, w)
 
-	RemoveDuplicates(m)
+	RemoveDuplicates(m, 0.001)
 
 	if len(m.Vertices()) != 9 {
 		t.Fatal("Vertices number after removal does not match")
